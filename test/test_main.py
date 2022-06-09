@@ -38,7 +38,7 @@ class TestConduit(object):
 	def test_datas_to_list(self):  ## Szűrjünk rá és listázzuk ki a 'loret' tag-et tartalmazó article-ket
 		loret_tag = self.browser.find_element_by_xpath('//div[@class="sidebar"]/div/a[@href="#/tag/loret"]')
 		loret_tag.click()
-
+		time.sleep(0.5)
 		WebDriverWait(self.browser, 20).until(
 			EC.visibility_of_element_located((By.XPATH, '//div[@class="feed-toggle"]/ul/li/a[@href="#/tag/loret"]')))
 		article_titles = self.browser.find_elements_by_xpath(
