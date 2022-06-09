@@ -87,7 +87,7 @@ class TestConduit(object):
 		self.browser.find_element_by_xpath('//a[@href="#/editor"]').click()
 		editor_article(self.browser, new_article['title'], new_article['about'], new_article['descr'],
 					   new_article['tags'])
-
+		time.sleep(1)
 		my_articles_titles(self.browser)
 		self.browser.find_element_by_xpath(f'//h1[text()="{new_article["title"]}"]').click()
 
