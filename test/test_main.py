@@ -107,16 +107,16 @@ class TestConduit(object):
 		my_articles(self.browser)
 		assert self.browser.find_element_by_xpath(f'//h1[text()="{modified_article["title"]}"]').is_displayed()
 
-	def test_delete_article(self):  # article törléséhez első lépésben létre kell hozni egy új article-t
-		self.browser.find_element_by_xpath('//a[@href="#/editor"]').click()
-		editor_article(self.browser, new_article['title'], new_article['about'], new_article['descr'],
-					   new_article['tags'])
-		time.sleep(1)
-		assert self.browser.current_url == f'http://localhost:1667/#/articles/{new_article["about"]}'
-		# my_articles(self.browser)
-		# article_to_delete = WebDriverWait(self.browser, 20).until(
-		# 	EC.presence_of_element_located((By.XPATH, f'//h1[text()="{new_article["title"]}"]')))
-		# article_to_delete.click()
+	def test_delete_article(self):  # article törléséhez kikeresem a my articles listában amit törölni akarok
+		# self.browser.find_element_by_xpath('//a[@href="#/editor"]').click()
+		# editor_article(self.browser, new_article['title'], new_article['about'], new_article['descr'],
+		# 			   new_article['tags'])
+		# time.sleep(1)
+		# assert self.browser.current_url == f'http://localhost:1667/#/articles/{new_article["about"]}'
+		my_articles(self.browser)
+		article_to_delete = WebDriverWait(self.browser, 20).until(
+			EC.presence_of_element_located((By.XPATH, f'//h1[text()="{new_article["title"]}"]')))
+		article_to_delete.click()
 		# Törlöm az article-t
 		del_article_btn = WebDriverWait(self.browser, 20).until(
 			EC.visibility_of_element_located((By.XPATH, '//button[@class="btn btn-outline-danger btn-sm"]')))
@@ -130,4 +130,4 @@ class TestConduit(object):
 		my_articles(self.browser)
 		my_articles_elements = WebDriverWait(self.browser, 20).until(
 			EC.visibility_of_all_elements_located((By.XPATH, '//a[@class="preview-link"]/h1')))
-		assert len(my_articles_elements) == 0
+		assert len(my_articles_elements) == 1
