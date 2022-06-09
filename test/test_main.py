@@ -83,7 +83,11 @@ class TestConduit(object):
 			EC.url_matches(f'http://localhost:1667/#/articles/{new_article["about"]}'))
 		assert self.browser.current_url == f'http://localhost:1667/#/articles/{new_article["about"]}'
 
-	def test_edit_article(self):
+	def test_edit_article(self): # cikk módosításához első lépésben létre kell hozni egy új cikket
+		self.browser.find_element_by_xpath('//a[@href="#/editor"]').click()
+		editor_article(self.browser, new_article['title'], new_article['about'], new_article['descr'],
+					   new_article['tags'])
+
 		my_articles_titles(self.browser)
 		self.browser.find_element_by_xpath(f'//h1[text()="{new_article["title"]}"]').click()
 
