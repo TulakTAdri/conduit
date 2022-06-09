@@ -40,15 +40,15 @@ def login(browser, useremail, userpwd):
 
 
 # Kilistázzuk a My Article-ből az article title-ket
-def my_articles_titles(browser):
+def my_articles(browser):
 	nav_profile = WebDriverWait(browser, 20).until(
 		EC.visibility_of_element_located((By.XPATH, '//a[@href="#/@KimmelDezso/"]')))
 	nav_profile.click()
 	WebDriverWait(browser, 20).until(
 		EC.visibility_of_element_located(
 			(By.XPATH, '//a[@href="#/@KimmelDezso/" and contains(text(), "My Articles")]')))
-	article_titles = browser.find_elements_by_xpath('//a[@class="preview-link"]/h1')
-	return article_titles
+	# article_titles = browser.find_elements_by_xpath('//a[@class="preview-link"]/h1')
+	# return article_titles
 
 
 # Cikk lérehozása/szerkesztése
