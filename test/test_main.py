@@ -96,8 +96,10 @@ class TestConduit(object):
 		# Módosítom a létrehozott article adatait
 		editor_article(self.browser, modified_article['title'], modified_article['about'], modified_article['descr'],
 					   modified_article['tags'])
-		time.sleep(0.5)
-		modified_article_title = self.browser.find_element_by_xpath(f'//h1[text()="{modified_article["title"]}"]')
+		# time.sleep(1)
+		# Megvizsgálom, hogy megjelenik az oldalon a módosított
+		modified_article_title = WebDriverWait(self.browser, 20).until(
+			EC.visibility_of_element_located((By.XPATH, f'//h1[contains(text(), {modified_article["title"]})]')))
 		assert modified_article_title.is_displayed()
 
 		# Megvizsgálom, hogy a módosítást követően a módosított article title-je szerepel a My Articles listában
@@ -105,10 +107,11 @@ class TestConduit(object):
 		assert self.browser.find_element_by_xpath(f'//h1[text()="{modified_article["title"]}"]').is_displayed()
 
 	def test_delete_article(self):  # article törléséhez első lépésben létre kell hozni egy új article-t
-		self.browser.find_element_by_xpath('//a[@href="#/editor"]').click()
-		editor_article(self.browser, new_article['title'], new_article['about'], new_article['descr'],
-					   new_article['tags'])
-		time.sleep(0.5)
+		# self.browser.find_element_by_xpath('//a[@href="#/editor"]').click()
+		# editor_article(self.browser, new_article['title'], new_article['about'], new_article['descr'],
+		# 			   new_article['tags'])
+		# time.sleep(0.5)
+
 		# Törlöm az article-t
 		assert self.browser.current_url == f'http://localhost:1667/#/articles/{new_article["about"]}'
 		del_article_btn = WebDriverWait(self.browser, 20).until(
