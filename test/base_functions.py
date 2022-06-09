@@ -42,7 +42,7 @@ def login(browser, useremail, userpwd):
 # Kilistázzuk a My Article-ből az article title-ket
 def my_articles(browser):
 	nav_profile = WebDriverWait(browser, 20).until(
-		EC.visibility_of_element_located((By.XPATH, '//a[@href="#/@KimmelDezso/"]')))
+		EC.visibility_of_element_located((By.XPATH, '//a[@href="#/@KimmelDezso/" and @class="nav-link"]')))
 	nav_profile.click()
 	WebDriverWait(browser, 20).until(
 		EC.visibility_of_element_located(
