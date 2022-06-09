@@ -116,6 +116,7 @@ class TestConduit(object):
 		assert self.browser.current_url == 'http://localhost:1667/#/'
 
 		# Ellenőrzöm, hogy a My Articles listájában nem szerepel a kitörölt article
+		time.sleep(0.5)
 		my_articles_titles(self.browser)
 		deleted_article_title = new_article["title"]
 		my_article_elements = self.browser.find_elements_by_xpath('//a[@class="preview-link"]/h1')
