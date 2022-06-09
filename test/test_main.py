@@ -115,10 +115,8 @@ class TestConduit(object):
 		time.sleep(2)
 		assert self.browser.current_url == 'http://localhost:1667/#/'
 
-		# Ellenőrzöm, hogy a My Articles listájában nem szerepel a kitörölt article
+		# Ellenőrzöm, hogy a My Articles listájában nem szerepel a kitörölt article, azaz a lista üres
 		time.sleep(0.5)
 		my_articles_titles(self.browser)
-		deleted_article_title = new_article["title"]
-		my_article_elements = self.browser.find_elements_by_xpath('//a[@class="preview-link"]/h1')
-		for i in my_article_elements:
-			assert not i.text == deleted_article_title
+		my_articles_elements = self.browser.find_elements_by_xpath('//a[@class="preview-link"]/h1')
+		assert len(my_articles_elements) == 0
