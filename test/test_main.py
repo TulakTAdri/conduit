@@ -30,31 +30,31 @@ class TestConduit(object):
 		logout_nav.click()
 
 		WebDriverWait(self.browser, 20).until(EC.presence_of_element_located((By.XPATH, '//a[@href="#/login"]')))
-
+		# Kijelentkezés után ellenőrizzük, hogy a Sign in és Sign up menüpontok megjelennek
 		assert len(self.browser.find_elements_by_xpath('//a[@class="nav-link"]')) == 2
 		assert self.browser.find_element_by_xpath('//a[@href="#/login" and @class="nav-link"]').is_enabled()
 		assert self.browser.find_element_by_xpath('//a[@href="#/register" and @class="nav-link"]').is_displayed()
 
-	# def test_datas_to_list(self):  ## Szűrjünk rá és listázzuk ki a 'loret' tag-et tartalmazó article-ket
-	# 	loret_tag = self.browser.find_element_by_xpath('//div[@class="sidebar"]/div/a[@href="#/tag/loret"]')
-	# 	loret_tag.click()
-	#
-	# 	WebDriverWait(self.browser, 20).until(
-	# 		EC.visibility_of_element_located((By.XPATH, '//div[@class="feed-toggle"]/ul/li/a[@href="#/tag/loret"]')))
-	# 	article_titles = self.browser.find_elements_by_xpath(
-	# 		'//div[@class="article-preview"]//a[@class="preview-link" and contains(@href, "articles")]/h1')
-	#
-	# 	articles = []
-	# 	for title in article_titles:
-	# 		articles.append(title)
-	#
-	# 	assert len(articles) > 0
-	#
-	# 	with open('Conduit/test/article_out_titles.txt', 'w', encoding='UTF-8') as data_file:
-	# 		for i in articles:
-	# 			data_file.write(i.text)
-	# 			data_file.write("\n")
-	#
+	def test_datas_to_list(self):  ## Szűrjünk rá és listázzuk ki a 'loret' tag-et tartalmazó article-ket
+		loret_tag = self.browser.find_element_by_xpath('//div[@class="sidebar"]/div/a[@href="#/tag/loret"]')
+		loret_tag.click()
+
+		WebDriverWait(self.browser, 20).until(
+			EC.visibility_of_element_located((By.XPATH, '//div[@class="feed-toggle"]/ul/li/a[@href="#/tag/loret"]')))
+		article_titles = self.browser.find_elements_by_xpath(
+			'//div[@class="article-preview"]//a[@class="preview-link" and contains(@href, "articles")]/h1')
+
+		articles = []
+		for title in article_titles:
+			articles.append(title)
+
+		assert len(articles) > 0
+
+		with open('test/article_out_titles.txt', 'w', encoding='UTF-8') as data_file:
+			for i in articles:
+				data_file.write(i.text)
+				data_file.write("\n")
+
 	# def test_pagination(self):  ## Lapozás.
 	# 	# Vizsgáljuk meg, hogy a lapozó gombok kattinthatók, és az aktív gomb színe zöld.
 	# 	pagination_btn = self.browser.find_elements_by_xpath(

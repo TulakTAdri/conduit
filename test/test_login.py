@@ -24,28 +24,14 @@ class TestConduitLogin(object):
 		self.browser.quit()
 
 	def test_register(self):  # Vizsgáljuk meg a regisztrációt negatív ágon, már létező adatokkal.
-		# register_nav = self.browser.find_element_by_xpath('//a[@href="#/register"]')
-		# register_nav.click()
-		#
-		# username_input = self.browser.find_element_by_xpath('//input[@placeholder="Username"]')
-		# email_input = self.browser.find_element_by_xpath('//input[@placeholder="Email"]')
-		# pwd_input = self.browser.find_element_by_xpath('//input[@placeholder="Password"]')
-		#
-		# username_input.send_keys(test_user['username'])
-		# email_input.send_keys(test_user['user_email'])
-		# pwd_input.send_keys(test_user['user_pwd'])
-		#
-		# sign_up_btn = self.browser.find_element_by_xpath('//button[contains(text(), "Sign up")]')
-		# sign_up_btn.click()
-		# time.sleep(3)
+		# Ehhez először elvégezzük a regisztrációt, majd kilépünk
 		base_functions.registration(self.browser, test_user['username'], test_user['user_email'], test_user['user_pwd'])
 		WebDriverWait(self.browser, 20).until(
 			EC.visibility_of_element_located((By.XPATH, '//button[@class="swal-button swal-button--confirm"]'))).click()
 		time.sleep(0.5)
-		assert self.browser.current_url == 'http://localhost:1667/#/'
 		WebDriverWait(self.browser, 20).until(
 			EC.visibility_of_element_located((By.XPATH, '//a[contains(text(), "Log out")]'))).click()
-
+		# Újraregisztrálunk a már felhasznált adatokkal
 		base_functions.registration(self.browser, test_user['username'], test_user['user_email'], test_user['user_pwd'])
 		WebDriverWait(self.browser, 30).until(
 			EC.visibility_of_element_located((By.XPATH, '//div[@class="swal-icon swal-icon--error"]')))
@@ -66,10 +52,10 @@ class TestConduitLogin(object):
 
 		# profile = self.browser.find_elements_by_xpath('//a[@class="nav-link"]')[2]
 		assert self.browser.current_url == 'http://localhost:1667/#/'
-
-	# profile = WebDriverWait(self.browser, 30).until(
-	# 	EC.presence_of_all_elements_located((By.XPATH, '//a[@class="nav-link"]')))
-	# assert profile[2].text == test_user['username']
+		# Ellenőrizzük, hogy a regisztrált felhasználónév megjelenik a menüpontok között
+		profile = WebDriverWait(self.browser, 30).until(
+			EC.presence_of_all_elements_located((By.XPATH, '//a[@class="nav-link"]')))
+		assert profile[2].text == test_user['username']
 
 	def test_cookie_bar(self):  # Vizsgáljuk meg az adatkezelési nyilatkozat működését
 		cookie_panel = self.browser.find_element_by_xpath('//div[@id="cookie-policy-panel"]')
@@ -79,6 +65,5 @@ class TestConduitLogin(object):
 			'//button[@class="cookie__bar__buttons__button cookie__bar__buttons__button--accept"]')
 		cookie_accept_btn.click()
 		time.sleep(0.5)
-
+		# lista-ként rákeresünk az eltűnő panelre és nullának vesszük a hosszát, azaz nem jelenik meg az oldalon
 		assert len(self.browser.find_elements_by_xpath('//div[@id="cookie-policy-panel"]')) == 0
-# lista-ként kell rákeresni az eltűnő panelre és úgy kell nullának venni a hosszát
