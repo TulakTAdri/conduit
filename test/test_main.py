@@ -79,9 +79,10 @@ class TestConduit(object):
 		editor_article(self.browser, new_article['title'], new_article['about'], new_article['descr'],
 					   new_article['tags'])
 
-		WebDriverWait(self.browser, 20).until(
+		# Ellenőrzöm, hogy a létrehozott article felületére irányít az oldal
+		new_article_url = WebDriverWait(self.browser, 20).until(
 			EC.url_matches(f'http://localhost:1667/#/articles/{new_article["about"]}'))
-		assert self.browser.current_url == f'http://localhost:1667/#/articles/{new_article["about"]}'
+		assert self.browser.current_url == new_article_url
 
 	def test_edit_article(self):  # article módosításához első lépésben létre kell hozni egy új article-t
 		self.browser.find_element_by_xpath('//a[@href="#/editor"]').click()
@@ -110,10 +111,12 @@ class TestConduit(object):
 		# self.browser.find_element_by_xpath('//a[@href="#/editor"]').click()
 		# editor_article(self.browser, new_article['title'], new_article['about'], new_article['descr'],
 		# 			   new_article['tags'])
-		# time.sleep(0.5)
-
+		# time.sleep(1)
+		# assert self.browser.current_url == f'http://localhost:1667/#/articles/{new_article["about"]}'
+		my_articles_titles(self.browser)
+		article_to_delete = self.browser.find_element_by_xpath(f'//h1[text()="{modified_article["title"]}"]')
+		article_to_delete.click()
 		# Törlöm az article-t
-		assert self.browser.current_url == f'http://localhost:1667/#/articles/{new_article["about"]}'
 		del_article_btn = WebDriverWait(self.browser, 20).until(
 			EC.visibility_of_element_located((By.XPATH, '//button[@class="btn btn-outline-danger btn-sm"]')))
 		del_article_btn.click()
