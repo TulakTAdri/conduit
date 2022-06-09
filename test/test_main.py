@@ -55,23 +55,23 @@ class TestConduit(object):
 				data_file.write(i.text)
 				data_file.write("\n")
 
-	# def test_pagination(self):  ## Lapozás.
-	# 	# Vizsgáljuk meg, hogy a lapozó gombok kattinthatók, és az aktív gomb színe zöld.
-	# 	pagination_btn = self.browser.find_elements_by_xpath(
-	# 		'//ul[@class="pagination"]/li/a[contains(@class, "page-link")]')
-	# 	page_counter = 1
-	# 	for btn in pagination_btn:
-	# 		assert btn.is_enabled()
-	#
-	# 		active_btn = self.browser.find_element_by_xpath(
-	# 			'//ul[@class="pagination"]/li[contains(@class, "page-item active")]/a')
-	# 		active_btn_rgbcolor = active_btn.value_of_css_property('background-color')
-	# 		active_btn_hexcolor = Color.from_string(active_btn_rgbcolor).hex
-	#
-	# 		assert active_btn_hexcolor == '#5cb85c'
-	#
-	# 		page_counter += 1
-	#
+	def test_pagination(self):  # Lapozás.
+		# Vizsgáljuk meg, hogy a lapozó gombok kattinthatók, és az aktív gomb színe zöld.
+		pagination_btn = self.browser.find_elements_by_xpath(
+			'//ul[@class="pagination"]/li/a[contains(@class, "page-link")]')
+		page_counter = 1
+		for btn in pagination_btn:
+			assert btn.is_enabled()
+
+			active_btn = self.browser.find_element_by_xpath(
+				'//ul[@class="pagination"]/li[contains(@class, "page-item active")]/a')
+			active_btn_rgbcolor = active_btn.value_of_css_property('background-color')
+			active_btn_hexcolor = Color.from_string(active_btn_rgbcolor).hex
+
+			assert active_btn_hexcolor == '#5cb85c'
+
+			page_counter += 1
+
 	# def test_new_article(self):
 	# 	new_article_nav = self.browser.find_element_by_xpath('//a[@href="#/editor"]')
 	# 	new_article_nav.click()
