@@ -97,6 +97,9 @@ class TestConduit(object):
 		editor_article(self.browser, modified_article['title'], modified_article['about'], modified_article['descr'],
 					   modified_article['tags'])
 		time.sleep(0.5)
+		modified_article_title = self.browser.find_element_by_xpath(f'//h1[text()="{modified_article["title"]}"]')
+		assert modified_article_title.is_displayed()
+
 		# Megvizsgálom, hogy a módosítást követően a módosított article title-je szerepel a My Articles listában
 		my_articles_titles(self.browser)
 		assert self.browser.find_element_by_xpath(f'//h1[text()="{modified_article["title"]}"]').is_displayed()
@@ -118,5 +121,6 @@ class TestConduit(object):
 		# Ellenőrzöm, hogy a My Articles listájában nem szerepel a kitörölt article, azaz a lista üres
 		time.sleep(0.5)
 		my_articles_titles(self.browser)
-		my_articles_elements = self.browser.find_elements_by_xpath('//a[@class="preview-link"]/h1')
+		my_articles_elements = WebDriverWait(self.browser, 20).until(
+			EC.visibility_of_all_elements_located((By.XPATH, '//a[@class="preview-link"]/h1')))
 		assert len(my_articles_elements) == 0
