@@ -72,39 +72,37 @@ class TestConduit(object):
 
 			page_counter += 1
 
-	# def test_new_article(self):
-	# 	new_article_nav = self.browser.find_element_by_xpath('//a[@href="#/editor"]')
-	# 	new_article_nav.click()
-	#
-	# 	editor_article(self.browser, new_article['title'], new_article['about'], new_article['descr'],
-	# 				   new_article['tags'])
-	#
-	# 	WebDriverWait(self.browser, 20).until(
-	# 		EC.url_matches(f'http://localhost:1667/#/articles/{new_article["about"]}'))
-	# 	assert self.browser.current_url == f'http://localhost:1667/#/articles/{new_article["about"]}'
-	#
-	# def test_delete_article(self):
-	# 	my_articles_titles(self.browser)[0].click()
-	#
-	# 	WebDriverWait(self.browser, 20).until(
-	# 		EC.visibility_of_element_located((By.XPATH, '//button[@class="btn btn-outline-danger btn-sm"]'))).click()
-	# 	assert self.browser.current_url == 'http://localhost:1667/#/articles/tesztcikk'
-	# 	time.sleep(2)
-	# 	assert self.browser.current_url == 'http://localhost:1667/#/'
-	#
-	# ## hogyan lehet az eltűnő felugró ablakot "elkapni"???
-	#
-	# def test_edit_article(self):
-	# 	my_articles_titles(self.browser)[0].click()
-	#
-	# 	WebDriverWait(self.browser, 20).until(
-	# 		EC.visibility_of_element_located((By.XPATH, '//a[@href="#/editor/tesztcikk"]'))).click()
-	# 	time.sleep(1)
-	# 	assert self.browser.current_url == 'http://localhost:1667/#/editor/tesztcikk'
-	#
-	# 	editor_article(self.browser, modified_article['title'], modified_article['about'], modified_article['descr'],
-	# 				   modified_article['tags'])
-	# 	time.sleep(0.5)
-	# 	my_articles_titles(self.browser)
-	# 	assert self.browser.find_element_by_xpath(f'//h1[text()="{modified_article["title"]}"]').is_displayed()
+	def test_new_article(self):
+		new_article_nav = self.browser.find_element_by_xpath('//a[@href="#/editor"]')
+		new_article_nav.click()
 
+		editor_article(self.browser, new_article['title'], new_article['about'], new_article['descr'], new_article['tags'])
+
+		WebDriverWait(self.browser, 20).until(
+			EC.url_matches(f'http://localhost:1667/#/articles/{new_article["about"]}'))
+		assert self.browser.current_url == f'http://localhost:1667/#/articles/{new_article["about"]}'
+
+# def test_delete_article(self):
+# 	my_articles_titles(self.browser)[0].click()
+#
+# 	WebDriverWait(self.browser, 20).until(
+# 		EC.visibility_of_element_located((By.XPATH, '//button[@class="btn btn-outline-danger btn-sm"]'))).click()
+# 	assert self.browser.current_url == 'http://localhost:1667/#/articles/tesztcikk'
+# 	time.sleep(2)
+# 	assert self.browser.current_url == 'http://localhost:1667/#/'
+#
+# ## hogyan lehet az eltűnő felugró ablakot "elkapni"???
+#
+# def test_edit_article(self):
+# 	my_articles_titles(self.browser)[0].click()
+#
+# 	WebDriverWait(self.browser, 20).until(
+# 		EC.visibility_of_element_located((By.XPATH, '//a[@href="#/editor/tesztcikk"]'))).click()
+# 	time.sleep(1)
+# 	assert self.browser.current_url == 'http://localhost:1667/#/editor/tesztcikk'
+#
+# 	editor_article(self.browser, modified_article['title'], modified_article['about'], modified_article['descr'],
+# 				   modified_article['tags'])
+# 	time.sleep(0.5)
+# 	my_articles_titles(self.browser)
+# 	assert self.browser.find_element_by_xpath(f'//h1[text()="{modified_article["title"]}"]').is_displayed()
