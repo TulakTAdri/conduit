@@ -84,10 +84,12 @@ class TestConduit(object):
 		assert self.browser.current_url == f'http://localhost:1667/#/articles/{new_article["about"]}'
 
 	def test_edit_article(self):
-		my_articles_titles(self.browser)[0].click()
+		my_articles_titles(self.browser)
+		self.browser.find_element_by_xpath(f'//h1[text()="{new_article["title"]}"]').click()
 
-		WebDriverWait(self.browser, 20).until(
-			EC.visibility_of_element_located((By.XPATH, f'//a[@href="#/editor/{new_article["about"]}"]'))).click()
+		edit_article_btn = WebDriverWait(self.browser, 20).until(
+			EC.visibility_of_element_located((By.XPATH, f'//a[@href="#/editor/{new_article["about"]}"]')))
+		edit_article_btn.click()
 		time.sleep(1)
 		assert self.browser.current_url == f'http://localhost:1667/#/editor/{new_article["about"]}'
 
