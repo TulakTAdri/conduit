@@ -83,33 +83,41 @@ class TestConduit(object):
 			EC.url_matches(f'http://localhost:1667/#/articles/{new_article["about"]}'))
 		assert self.browser.current_url == f'http://localhost:1667/#/articles/{new_article["about"]}'
 
-	def test_edit_article(self): # cikk módosításához első lépésben létre kell hozni egy új cikket
+	def test_edit_article(self):  # article módosításához első lépésben létre kell hozni egy új article-t
 		self.browser.find_element_by_xpath('//a[@href="#/editor"]').click()
 		editor_article(self.browser, new_article['title'], new_article['about'], new_article['descr'],
 					   new_article['tags'])
 		time.sleep(0.5)
-		# my_articles_titles(self.browser)
-		# self.browser.find_element_by_xpath(f'//h1[text()="{new_article["title"]}"]').click()
 
 		edit_article_btn = WebDriverWait(self.browser, 20).until(
 			EC.visibility_of_element_located((By.XPATH, f'//a[@href="#/editor/{new_article["about"]}"]')))
 		edit_article_btn.click()
 		time.sleep(1)
-		assert self.browser.current_url == f'http://localhost:1667/#/editor/{new_article["about"]}'
-
+		# Módosítom a létrehozott article adatait
 		editor_article(self.browser, modified_article['title'], modified_article['about'], modified_article['descr'],
 					   modified_article['tags'])
 		time.sleep(0.5)
+		# Megvizsgálom, hogy a módosítást követően a módosított article title-je szerepel a My Articles listában
 		my_articles_titles(self.browser)
 		assert self.browser.find_element_by_xpath(f'//h1[text()="{modified_article["title"]}"]').is_displayed()
 
-# def test_delete_article(self):
-# 	my_articles_titles(self.browser)[0].click()
-#
-# 	WebDriverWait(self.browser, 20).until(
-# 		EC.visibility_of_element_located((By.XPATH, '//button[@class="btn btn-outline-danger btn-sm"]'))).click()
-# 	assert self.browser.current_url == f'http://localhost:1667/#/articles/{new_article["about"]}'
-# 	time.sleep(2)
-# 	assert self.browser.current_url == 'http://localhost:1667/#/'
-#
-# # ## hogyan lehet az eltűnő felugró ablakot "elkapni"???
+	def test_delete_article(self):  # article törléséhez első lépésben létre kell hozni egy új article-t
+		self.browser.find_element_by_xpath('//a[@href="#/editor"]').click()
+		editor_article(self.browser, new_article['title'], new_article['about'], new_article['descr'],
+					   new_article['tags'])
+		time.sleep(0.5)
+		# Törlöm az article-t
+		assert self.browser.current_url == f'http://localhost:1667/#/articles/{new_article["about"]}'
+		del_article_btn = WebDriverWait(self.browser, 20).until(
+			EC.visibility_of_element_located((By.XPATH, '//button[@class="btn btn-outline-danger btn-sm"]')))
+		del_article_btn.click()
+		# Ellenőrzöm, hogy törlés után automatikusan a főoldalra irányít az oldal
+		time.sleep(2)
+		assert self.browser.current_url == 'http://localhost:1667/#/'
+
+		# Ellenőrzöm, hogy a My Articles listájában nem szerepel a kitörölt article
+		my_articles_titles(self.browser)
+		deleted_article_title = new_article["title"]
+		my_article_elements = self.browser.find_elements_by_xpath('//a[@class="preview-link"]/h1')
+		for i in my_article_elements:
+			assert not i.text == deleted_article_title
