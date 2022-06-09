@@ -107,3 +107,4 @@ class TestConduit(object):
 	# 	time.sleep(0.5)
 	# 	my_articles_titles(self.browser)
 	# 	assert self.browser.find_element_by_xpath(f'//h1[text()="{modified_article["title"]}"]').is_displayed()
+
