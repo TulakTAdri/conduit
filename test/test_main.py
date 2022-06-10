@@ -8,6 +8,8 @@ from selenium.webdriver.support.color import Color
 from base_functions import *
 from testdatas import test_user, new_article, modified_article
 from selenium.webdriver.chrome.options import Options
+import csv
+import pandas as pd
 
 
 class TestConduit(object):
@@ -112,11 +114,6 @@ class TestConduit(object):
 		editor_article(self.browser, new_article['title'], new_article['about'], new_article['descr'],
 					   new_article['tags'])
 		time.sleep(0.5)
-		# article_to_delete = WebDriverWait(self.browser, 20).until(
-		# 	EC.presence_of_element_located(
-		# 		(By.XPATH, '//a[@class="preview-link" and @href="#/articles/tesztcikk"]')))
-		# article_to_delete.click()
-		# time.sleep(1)
 		# Törlöm az article-t
 		del_article_btn = WebDriverWait(self.browser, 20).until(
 			EC.visibility_of_element_located((By.XPATH, '//button[@class="btn btn-outline-danger btn-sm"]')))
@@ -129,3 +126,43 @@ class TestConduit(object):
 		my_articles_elements = WebDriverWait(self.browser, 20).until(
 			EC.visibility_of_all_elements_located((By.XPATH, '//a[@class="preview-link"]')))
 		assert len(my_articles_elements) == 1
+
+	def test_datas_to_file(self):
+		# Elmentem a Global Feedben található article-k title-jeit, about-jait és szerzőjét egy .csv fájlba
+		# első lépésben ellenőrzöm, hogy a Global Feeden vagyok, azaz nem kattintható a gomb
+		# global_feed_btn = WebDriverWait(self.browser, 20).until(
+		# 	EC.presence_of_element_located((By.XPATH, '//a[@href="#/" and contains(text(), "Global Feed")]')))
+		# assert not global_feed_btn.is_enabled()
+
+		article_author = self.browser.find_elements_by_xpath('//a[@class="author"]')
+		article_title = self.browser.find_elements_by_xpath('//a[@class="preview-link"]/h1')
+		article_about = self.browser.find_elements_by_xpath('//a[@class="preview-link"]/p')
+
+		with open('test/general_feed_articles.csv', 'w', newline='') as csvfile:
+			gen_feed_art = csv.writer(csvfile, delimiter=';')
+			gen_feed_art.writerow(['Nr.', 'Title', 'About', 'Author'])
+			for index, title in enumerate(article_title, start=1):
+				gen_feed_art.writerow(
+					[index, title.text, article_about[index - 1].text, article_author[index - 1].text])
+
+		pt_csv = pd.read_csv('test/general_feed_articles.csv')
+		assert len(article_title) == len(pt_csv.index)
+
+	def test_datas_from_file(self):
+		try:
+			with open('test/test_datas_articles.csv', 'r', encoding='UTF-8') as data_file:
+				data_table = csv.reader(data_file, delimiter=';')
+				next(data_table)
+				i = 0
+				for row in data_table:
+					i = i + 1
+					new_article_nav = self.browser.find_element_by_xpath('//a[@href="#/editor"]')
+					new_article_nav.click()
+					editor_article(self.browser, row[0], row[1], row[2], row[3])
+		except:
+			assert False
+		else:
+			assert True
+
+		pt_csv = pd.read_csv('test/test_datas_articles.csv')
+		assert i == len(pt_csv.index)
