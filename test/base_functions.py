@@ -36,9 +36,6 @@ def login(browser, useremail, userpwd):
 	time.sleep(2)
 
 
-# WebDriverWait(browser, 20).until(EC.presence_of_element_located((By.XPATH, '//a[contains(text(), "Log out")]')))
-
-
 # Kilistázzuk a My Article-ből az article title-ket
 def my_articles(browser):
 	nav_profile = WebDriverWait(browser, 20).until(

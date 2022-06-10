@@ -1,5 +1,5 @@
 test_user = {
-	'user_email': 'kimmeldezso2@gmail.com',
+	'user_email': 'kimmeldezso@gmail.com',
 	'user_pwd': 'Dezsoke1',
 	'username': 'KimmelDezso'
 }

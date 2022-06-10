@@ -1,15 +1,13 @@
+import csv
+
+import pandas as pd
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.wait import WebDriverWait
-from webdriver_manager.chrome import ChromeDriverManager
-import time
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.color import Color
+from webdriver_manager.chrome import ChromeDriverManager
+
 from base_functions import *
 from testdatas import test_user, new_article, modified_article
-from selenium.webdriver.chrome.options import Options
-import csv
-import pandas as pd
 
 
 class TestConduit(object):
@@ -27,7 +25,7 @@ class TestConduit(object):
 	def teardown(self):
 		self.browser.quit()
 
-	def test_logout(self):  ## Vizsgáljuk meg a kijelentkezés funkciót
+	def test_logout(self):  # Vizsgáljuk meg a kijelentkezés funkciót
 		logout_nav = self.browser.find_element_by_xpath('//a[contains(text(), "Log out")]')
 		logout_nav.click()
 
@@ -37,7 +35,7 @@ class TestConduit(object):
 		assert self.browser.find_element_by_xpath('//a[@href="#/login" and @class="nav-link"]').is_enabled()
 		assert self.browser.find_element_by_xpath('//a[@href="#/register" and @class="nav-link"]').is_displayed()
 
-	def test_datas_to_list(self):  ## Szűrjünk rá és listázzuk ki a 'loret' tag-et tartalmazó article-ket
+	def test_datas_to_list(self):  # Szűrjünk rá és listázzuk ki a 'loret' tag-et tartalmazó article-ket
 		loret_tag = self.browser.find_element_by_xpath('//div[@class="sidebar"]/div/a[@href="#/tag/loret"]')
 		loret_tag.click()
 		time.sleep(0.5)
