@@ -129,11 +129,6 @@ class TestConduit(object):
 
 	def test_datas_to_file(self):
 		# Elmentem a Global Feedben található article-k title-jeit, about-jait és szerzőjét egy .csv fájlba
-		# első lépésben ellenőrzöm, hogy a Global Feeden vagyok, azaz nem kattintható a gomb
-		# global_feed_btn = WebDriverWait(self.browser, 20).until(
-		# 	EC.presence_of_element_located((By.XPATH, '//a[@href="#/" and contains(text(), "Global Feed")]')))
-		# assert not global_feed_btn.is_enabled()
-
 		article_author = self.browser.find_elements_by_xpath('//a[@class="author"]')
 		article_title = self.browser.find_elements_by_xpath('//a[@class="preview-link"]/h1')
 		article_about = self.browser.find_elements_by_xpath('//a[@class="preview-link"]/p')
