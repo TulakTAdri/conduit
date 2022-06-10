@@ -92,7 +92,7 @@ class TestConduit(object):
 		my_articles(self.browser)
 		article_to_edit = WebDriverWait(self.browser, 20).until(
 			EC.presence_of_element_located(
-				(By.XPATH, '//a[@class="preview-link" and @href="#/articles/tesztcikk"]')))
+				(By.XPATH, f'//a[@class="preview-link" and @href="#/articles/{new_article["about"]}"]')))
 		article_to_edit.click()
 		time.sleep(1)
 		edit_article_btn = WebDriverWait(self.browser, 20).until(
@@ -127,9 +127,8 @@ class TestConduit(object):
 		# Ellenőrzöm, hogy törlés után automatikusan a főoldalra irányít az oldal
 		time.sleep(2)
 		assert self.browser.current_url == 'http://localhost:1667/#/'
-		# Ellenőrzöm, hogy a My Articles listájában nem szerepel a kitörölt article, azaz a lista üres
-		time.sleep(1)
+		# Ellenőrzöm, hogy a My Articles listájában nem szerepel a kitörölt article, ezesetben a lista üres
 		my_articles(self.browser)
 		my_articles_elements = WebDriverWait(self.browser, 20).until(
-			EC.visibility_of_all_elements_located((By.XPATH, '//a[@class="preview-link"]/h1')))
+			EC.visibility_of_all_elements_located((By.XPATH, '//a[@class="preview-link"]')))
 		assert len(my_articles_elements) == 0
