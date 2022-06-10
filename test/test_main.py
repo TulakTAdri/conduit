@@ -117,7 +117,7 @@ class TestConduit(object):
 		my_articles(self.browser)
 		article_to_delete = WebDriverWait(self.browser, 20).until(
 			EC.presence_of_element_located(
-				(By.XPATH, f'//a[@class="preview-link" and @href="#/articles/{new_article["about"]}"]')))
+				(By.XPATH, '//a[@class="preview-link" and @href="#/articles/tesztcikk"]')))
 		article_to_delete.click()
 		time.sleep(1)
 		# Törlöm az article-t

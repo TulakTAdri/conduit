@@ -49,6 +49,7 @@ def my_articles(browser):
 			(By.XPATH, '//a[@href="#/@KimmelDezso/" and contains(text(), "My Articles")]')))
 	# article_titles = browser.find_elements_by_xpath('//a[@class="preview-link"]/h1')
 	# return article_titles
+	time.sleep(0.5)
 
 
 # Cikk lérehozása/szerkesztése
