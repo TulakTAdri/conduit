@@ -1,13 +1,11 @@
 import csv
-
 import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.color import Color
 from webdriver_manager.chrome import ChromeDriverManager
-
 from base_functions import *
-from testdatas import test_user, new_article, modified_article
+from testdatas import *
 
 
 class TestConduit(object):
@@ -17,7 +15,7 @@ class TestConduit(object):
 		browser_options.headless = True
 		self.browser = webdriver.Chrome(ChromeDriverManager().install(), options=browser_options)
 		self.browser.implicitly_wait(10)
-		URL = "http://localhost:1667/#/"
+		URL = main_page
 		self.browser.get(URL)
 		self.browser.maximize_window()
 		login(self.browser, test_user['user_email'], test_user['user_pwd'])
@@ -48,7 +46,8 @@ class TestConduit(object):
 			loret_tag.click()
 			time.sleep(0.5)
 			WebDriverWait(self.browser, 20).until(
-				EC.visibility_of_element_located((By.XPATH, '//div[@class="feed-toggle"]/ul/li/a[@href="#/tag/loret"]')))
+				EC.visibility_of_element_located(
+					(By.XPATH, '//div[@class="feed-toggle"]/ul/li/a[@href="#/tag/loret"]')))
 			article_titles = self.browser.find_elements_by_xpath(
 				'//div[@class="article-preview"]//a[@class="preview-link" and contains(@href, "articles")]/h1')
 		except:
@@ -64,22 +63,20 @@ class TestConduit(object):
 				data_file.write(i.text)
 				data_file.write("\n")
 
-
 	def test_pagination(self):  # Több oldalas lista bejárása - lapozás.
 		# Vizsgáljuk meg, hogy a lapozó gombok kattinthatók, és az aktív gomb színe zöld.
 		pagination_btn = self.browser.find_elements_by_xpath(
 			'//ul[@class="pagination"]/li/a[contains(@class, "page-link")]')
-		page_counter = 1
 		for btn in pagination_btn:
 			assert btn.is_enabled()
-
+			btn.click()
+			time.sleep(1)
 			active_btn = self.browser.find_element_by_xpath(
 				'//ul[@class="pagination"]/li[contains(@class, "page-item active")]/a')
 			active_btn_rgbcolor = active_btn.value_of_css_property('background-color')
 			active_btn_hexcolor = Color.from_string(active_btn_rgbcolor).hex
 			assert active_btn_hexcolor == '#5cb85c'
-			page_counter += 1
-
+			assert btn.text == active_btn.text
 
 	def test_new_article(self):
 		#  Új adat bevitel. Létrehozok egy új article-t.
@@ -97,7 +94,6 @@ class TestConduit(object):
 		WebDriverWait(self.browser, 20).until(
 			EC.url_matches(f'http://localhost:1667/#/articles/{new_article["about"]}'))
 		assert self.browser.current_url == f'http://localhost:1667/#/articles/{new_article["about"]}'
-
 
 	def test_edit_article(self):
 		#  Meglévő adat módosítás
@@ -122,14 +118,13 @@ class TestConduit(object):
 		else:
 			assert True
 		# Megvizsgálom, hogy megjelenik az article oldalán a módosított title
+		time.sleep(1)
 		modified_article_title = WebDriverWait(self.browser, 20).until(
-			EC.visibility_of_element_located((By.XPATH, f'//h1[contains(text(), {modified_article["title"]})]')))
-		assert modified_article_title.is_displayed()
-
+			EC.visibility_of_element_located((By.XPATH, '//h1')))
+		assert modified_article_title.text == modified_article['title']
 		# Megvizsgálom, hogy a módosított article title-je szerepel a My Articles listában
 		my_articles(self.browser)
 		assert self.browser.find_element_by_xpath(f'//h1[text()="{modified_article["title"]}"]').is_displayed()
-
 
 	def test_delete_article(self):
 		# Adat vagy adatok törlése
@@ -149,13 +144,12 @@ class TestConduit(object):
 		else:
 			assert True
 		# Ellenőrzöm, hogy törlés után automatikusan a főoldalra irányít az oldal
-		assert self.browser.current_url == 'http://localhost:1667/#/'
+		assert self.browser.current_url == main_page
 		# Ellenőrzöm, hogy a My Articles listájában nem szerepel a kitörölt article, így 1 db article-nek kell lennie
 		my_articles(self.browser)
 		my_articles_elements = WebDriverWait(self.browser, 20).until(
 			EC.visibility_of_all_elements_located((By.XPATH, '//a[@class="preview-link"]')))
 		assert len(my_articles_elements) == 1
-
 
 	def test_datas_to_file(self):
 		# Adatok lementése felületről.
@@ -178,7 +172,6 @@ class TestConduit(object):
 		# Ellenőrzöm, hogy az oldalról leszedett lista hossza megegyezik az elmentett csv fájl sorainak számával
 		gf_csv = pd.read_csv('test/general_feed_articles.csv')
 		assert len(article_title) == len(gf_csv.index)
-
 
 	def test_datas_from_file(self):
 		# Ismételt és sorozatos adatbevitel adatforrásból

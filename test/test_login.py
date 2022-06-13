@@ -6,6 +6,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 from testdatas import test_user, registration_msg, registration_error
 import base_functions
+from testdatas import *
 from selenium.webdriver.chrome.options import Options
 
 
@@ -16,7 +17,7 @@ class TestConduitLogin(object):
 		browser_options.headless = True
 		self.browser = webdriver.Chrome(ChromeDriverManager().install(), options=browser_options)
 		self.browser.implicitly_wait(10)
-		URL = "http://localhost:1667/#/"
+		URL = main_page
 		self.browser.get(URL)
 		self.browser.maximize_window()
 
@@ -61,7 +62,7 @@ class TestConduitLogin(object):
 		else:
 			assert True
 		# Ellenőrizzük, hogy bejelentkezést követően a főoldalra kerültünk.
-		assert self.browser.current_url == 'http://localhost:1667/#/'
+		assert self.browser.current_url == main_page
 		# Ellenőrizzük, hogy a regisztrált felhasználónév megjelenik a menüpontok között
 		profile = WebDriverWait(self.browser, 30).until(
 			EC.presence_of_all_elements_located((By.XPATH, '//a[@class="nav-link"]')))

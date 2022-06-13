@@ -7,6 +7,8 @@ test_user = {
 registration_error = {'error': 'Registration failed!'}
 registration_msg = {'error_msg': 'Email already taken.'}
 
+main_page = 'http://localhost:1667/#/'
+
 new_article = {
 	'title': 'TesztCikk',
 	'about': 'tesztcikk',
