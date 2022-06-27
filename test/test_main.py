@@ -23,7 +23,8 @@ class TestConduitMain(object):
 	def teardown(self):
 		self.browser.quit()
 
-	def test_logout(self):  # Vizsgáljuk meg a kijelentkezés funkciót
+	def test_logout(self):  # ATC004
+		# Vizsgáljuk meg a kijelentkezés funkciót
 		logout_nav = self.browser.find_element_by_xpath('//a[contains(text(), "Log out")]')
 		logout_nav.click()
 
@@ -34,10 +35,8 @@ class TestConduitMain(object):
 		assert self.browser.find_element_by_xpath('//a[@href="#/login" and @class="nav-link"]').is_enabled()
 		assert self.browser.find_element_by_xpath('//a[@href="#/register" and @class="nav-link"]').is_displayed()
 
-	def test_datas_to_list(self):
-		# Adatok listázása
-		# Szűrjünk rá és listázzuk ki a 'loret' tag-et tartalmazó article-ket
-
+	def test_datas_to_list(self):  # ATC005
+		# Adatok listázása. Szűrjünk rá és listázzuk ki a 'loret' tag-et tartalmazó article-ket
 		loret_tag = self.browser.find_element_by_xpath('//div[@class="sidebar"]/div/a[@href="#/tag/loret"]')
 		loret_tag.click()
 		time.sleep(0.5)
@@ -56,7 +55,8 @@ class TestConduitMain(object):
 				data_file.write(i.text)
 				data_file.write("\n")
 
-	def test_pagination(self):  # Több oldalas lista bejárása - lapozás.
+	def test_pagination(self):  # ATC006
+		# Több oldalas lista bejárása - lapozás
 		# Vizsgáljuk meg, hogy a lapozó gombok kattinthatók, és az aktív gomb színe zöld.
 		pagination_btn = self.browser.find_elements_by_xpath(
 			'//ul[@class="pagination"]/li/a[contains(@class, "page-link")]')
@@ -71,7 +71,7 @@ class TestConduitMain(object):
 			assert active_btn_hexcolor == '#5cb85c'
 			assert btn.text == active_btn.text
 
-	def test_new_article(self):
+	def test_new_article(self):  # ATC007
 		#  Új adat bevitel. Létrehozok egy új article-t.
 		new_article_nav = self.browser.find_element_by_xpath('//a[@href="#/editor"]')
 		new_article_nav.click()
@@ -84,7 +84,7 @@ class TestConduitMain(object):
 			EC.url_matches(f'http://localhost:1667/#/articles/{new_article["about"]}'))
 		assert self.browser.current_url == f'http://localhost:1667/#/articles/{new_article["about"]}'
 
-	def test_edit_article(self):
+	def test_edit_article(self):  # ATC008
 		#  Meglévő adat módosítás
 		# article módosításához első lépésben megkeresem az article-t, amit módosítani fogok
 		my_articles(self.browser)
@@ -108,7 +108,7 @@ class TestConduitMain(object):
 		my_articles(self.browser)
 		assert self.browser.find_element_by_xpath(f'//h1[text()="{modified_article["title"]}"]').is_displayed()
 
-	def test_delete_article(self):
+	def test_delete_article(self):  # ATC009
 		# Adat vagy adatok törlése
 		# article törléséhez első lépésben létrehozok egyet, amit majd törölni fogok
 		self.browser.find_element_by_xpath('//a[@href="#/editor"]').click()
@@ -127,7 +127,7 @@ class TestConduitMain(object):
 		my_articles(self.browser)
 		assert len(self.browser.find_elements_by_xpath(f'//h1[text()="{article_to_del["title"]}"]')) == 0
 
-	def test_datas_to_file(self):
+	def test_datas_to_file(self):  # ATC010
 		# Adatok lementése felületről.
 		# Elmentem a Global Feedben található article-k title-jeit, about-jait és szerzőjét egy .csv fájlba
 		article_author = self.browser.find_elements_by_xpath('//a[@class="author"]')

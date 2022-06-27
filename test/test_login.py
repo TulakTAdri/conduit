@@ -24,7 +24,7 @@ class TestConduitLogin(object):
 	def teardown(self):
 		self.browser.quit()
 
-	def test_register(self):
+	def test_register(self):  # ATC001
 		# Vizsgáljuk meg a regisztrációt negatív ágon, már létező adatokkal.
 		# Ehhez először elvégezzük a regisztrációt, majd kilépünk
 		base_functions.registration(self.browser, test_user['username'], test_user['user_email'], test_user['user_pwd'])
@@ -50,7 +50,8 @@ class TestConduitLogin(object):
 		error_msg_button = self.browser.find_element_by_xpath('//button[@class="swal-button swal-button--confirm"]')
 		error_msg_button.click()
 
-	def test_sign_in(self):  # Ellenőrizzük a bejelentkezést pozitív ágon
+	def test_sign_in(self):  # ATC002
+		# Ellenőrizzük a bejelentkezést pozitív ágon
 		base_functions.login(self.browser, test_user['user_email'], test_user['user_pwd'])
 		# Ellenőrizzük, hogy bejelentkezést követően a főoldalra kerültünk.
 		assert self.browser.current_url == main_page
@@ -59,7 +60,8 @@ class TestConduitLogin(object):
 			EC.presence_of_all_elements_located((By.XPATH, '//a[@class="nav-link"]')))
 		assert profile[2].text == test_user['username']
 
-	def test_cookie_bar(self):  # Vizsgáljuk meg az adatkezelési nyilatkozat működését
+	def test_cookie_bar(self):  # ATC003
+		# Vizsgáljuk meg az adatkezelési nyilatkozat működését
 		cookie_panel = self.browser.find_element_by_xpath('//div[@id="cookie-policy-panel"]')
 		assert cookie_panel.is_displayed()
 
