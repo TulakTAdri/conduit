@@ -12,7 +12,7 @@ class TestConduitMain(object):
 
 	def setup(self):
 		browser_options = Options()
-		browser_options.headless = False
+		browser_options.headless = True
 		self.browser = webdriver.Chrome(ChromeDriverManager().install(), options=browser_options)
 		self.browser.implicitly_wait(10)
 		URL = main_page
