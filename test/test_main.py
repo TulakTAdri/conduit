@@ -112,10 +112,10 @@ class TestConduitMain(object):
 		# Adat vagy adatok törlése
 		# article törléséhez első lépésben létrehozok egyet, amit majd törölni fogok
 		self.browser.find_element_by_xpath('//a[@href="#/editor"]').click()
-		editor_article(self.browser, new_article['title'], new_article['about'], new_article['descr'],
-					   new_article['tags'])
+		editor_article(self.browser, article_to_del['title'], article_to_del['about'], article_to_del['descr'],
+					   article_to_del['tags'])
 		time.sleep(0.5)
-		# Törlöm az article-t
+		# Az article oldalán lévő del gombbal törlöm az article-t
 		del_article_btn = WebDriverWait(self.browser, 20).until(
 			EC.visibility_of_element_located((By.XPATH, '//button[@class="btn btn-outline-danger btn-sm"]')))
 		del_article_btn.click()
@@ -125,8 +125,7 @@ class TestConduitMain(object):
 		assert self.browser.current_url == main_page
 		# Ellenőrzöm, hogy a My Articles listájában nem szerepel a kitörölt article title-je
 		my_articles(self.browser)
-		# Megvizsgálom, hogy a törölt article title-je nem szerepel a My Articles listában
-		assert len(self.browser.find_elements_by_xpath(f'//h1[text()="{new_article["title"]}"]')) == 0
+		assert len(self.browser.find_elements_by_xpath(f'//h1[text()="{article_to_del["title"]}"]')) == 0
 
 	def test_datas_to_file(self):
 		# Adatok lementése felületről.

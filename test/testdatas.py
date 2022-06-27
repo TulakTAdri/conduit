@@ -17,10 +17,17 @@ new_article = {
 }
 
 modified_article = {
-	'title': 'TesztCikk2',
-	'about': 'tesztcikk2',
+	'title': 'Kutyafüle',
+	'about': 'kutyafarka',
 	'descr': "Contrary to popular belief, Lorem Ipsum is not simply random text. "
 			 "It has roots in a piece of classical Latin literature from 45 BC, "
 			 "making it over 2000 years old.",
 	'tags': 'nubian, sage, water'
+}
+
+article_to_del = {
+	'title': 'Kiskutya',
+	'about': 'kiskutya',
+	'descr': "Vauvau",
+	'tags': ''
 }
