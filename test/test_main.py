@@ -12,7 +12,7 @@ class TestConduitMain(object):
 
 	def setup(self):
 		browser_options = Options()
-		browser_options.headless = True
+		browser_options.headless = False
 		self.browser = webdriver.Chrome(ChromeDriverManager().install(), options=browser_options)
 		self.browser.implicitly_wait(10)
 		URL = main_page
@@ -123,16 +123,14 @@ class TestConduitMain(object):
 
 		# Ellenőrzöm, hogy törlés után automatikusan a főoldalra irányít az oldal
 		assert self.browser.current_url == main_page
-		# Ellenőrzöm, hogy a My Articles listájában nem szerepel a kitörölt article, így 1 db article-nek kell lennie a listában
+		# Ellenőrzöm, hogy a My Articles listájában nem szerepel a kitörölt article title-je
 		my_articles(self.browser)
-		my_articles_elements = WebDriverWait(self.browser, 20).until(
-			EC.visibility_of_all_elements_located((By.XPATH, '//a[@class="preview-link"]')))
-		assert len(my_articles_elements) == 1
+		# Megvizsgálom, hogy a törölt article title-je nem szerepel a My Articles listában
+		assert len(self.browser.find_elements_by_xpath(f'//h1[text()="{new_article["title"]}"]')) == 0
 
 	def test_datas_to_file(self):
 		# Adatok lementése felületről.
 		# Elmentem a Global Feedben található article-k title-jeit, about-jait és szerzőjét egy .csv fájlba
-
 		article_author = self.browser.find_elements_by_xpath('//a[@class="author"]')
 		article_title = self.browser.find_elements_by_xpath('//a[@class="preview-link"]/h1')
 		article_about = self.browser.find_elements_by_xpath('//a[@class="preview-link"]/p')
